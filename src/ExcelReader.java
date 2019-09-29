@@ -52,14 +52,14 @@ public class ExcelReader extends Exception{
 	
 	// delete the property file
 	public static void deleteproperty() {
-		if(fl.delete()) 
-        { 
+	    if(fl.delete()) 
+            { 
             System.out.println("File deleted successfully"); 
-        } 
-        else
-        { 
+            } 
+            else
+            { 
             System.out.println("Failed to delete the file"); 
-        }
+            }
 	}
 	
 	// Read The property file
