@@ -4,13 +4,13 @@ import com.codoid.products.fillo.Recordset;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
-import com.codoid.products.exception.FilloException;
 import com.codoid.products.fillo.Connection;
 
 
@@ -19,13 +19,37 @@ public class ExcelReader extends Exception{
 	public static Recordset recordset;
 	public static Fillo fillo = new Fillo();
 	public static File fl = new File("C:\\Users\\soham\\Automation_Testing\\ReadExcel\\src\\ColumnListfromexcel.properties");
+	// Duplicate policy
+	public static final Set<String> set = new HashSet<String>();
 	
 
 	public static void main(String[] args) throws Exception {
 
 		ArrayList<String> fieldnames = listtheColumnnames();
-		System.out.println("field from main : " + fieldvalues(15));	
+		
+		for (int i = 0; i < noOfrows(); i++) {
+			String policy = fieldvalues(i).get("keys0");
+			
+			// validated the duplicate policy field : add to set and get true and false in return
+			boolean det = set.add(policy);
+			if (det) {
+				System.out.println("Restricted val : "+fieldvalues(i));
+			}
+		}
 	}
+	
+	// checking for DUPLICATE : of a particular folder
+	public static boolean validator(String policy) {
+		try {
+			
+			System.out.println("Set val :" + set.add(policy));
+			return true;
+		} catch (Exception e) {
+			System.out.println("Duplicate : " + policy);
+			return false;
+		}
+	}
+	
 	
 	// get row data as per the row
 	public static Map<String, String> fieldvalues(int rowcount) throws Exception {
@@ -50,17 +74,6 @@ public class ExcelReader extends Exception{
 		return rowmap;
 	}
 	
-	// delete the property file
-	public static void deleteproperty() {
-	    if(fl.delete()) 
-            { 
-            System.out.println("File deleted successfully"); 
-            } 
-            else
-            { 
-            System.out.println("Failed to delete the file"); 
-            }
-	}
 	
 	// Read The property file
 	public static String properties(String key) throws Exception {
